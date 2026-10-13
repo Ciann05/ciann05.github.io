@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ciann</title>
+<meta name="description" content="Ciann — data science and public health at UC Berkeley.">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --fg: #1b1b1b;
+    --muted: #6b6b66;
+    --line: #e4e3dc;
+    --accent: #2f5d50;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #131413; --fg: #ecece6; --muted: #9a9a92; --line: #2a2b29; --accent: #8fc7b3; }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 17px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; }
+  nav .name { font-weight: 650; letter-spacing: -0.01em; }
+  nav a { color: var(--muted); text-decoration: none; margin-left: 20px; font-size: 15px; }
+  nav a:hover { color: var(--accent); }
+  header.hero { padding: 72px 0 48px; }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.2rem); line-height: 1.1; letter-spacing: -0.03em; margin: 0 0 16px; }
+  .lead { font-size: 1.15rem; color: var(--muted); max-width: 34em; margin: 0 0 24px; }
+  .btns a {
+    display: inline-block; padding: 9px 18px; border-radius: 8px; text-decoration: none;
+    font-size: 15px; margin-right: 10px; border: 1px solid var(--line); color: var(--fg);
+  }
+  .btns a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btns a.primary { color: #0e0f0e; } }
+  .btns a:hover { opacity: .85; }
+  section { padding: 40px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 0 0 20px; font-weight: 600; }
+  .card { margin-bottom: 28px; }
+  .card h3 { margin: 0 0 4px; font-size: 1.05rem; }
+  .card .meta { color: var(--muted); font-size: 14px; margin-bottom: 6px; }
+  .card p { margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; font-size: 14px; color: var(--muted); }
+  a.link { color: var(--accent); }
+  footer { padding: 40px 0 56px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <span class="name">Ciann</span>
+    <div>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Hi, I'm Ciann.</h1>
+    <p class="lead">
+      Data Science and Public Health student at UC Berkeley. I build data pipelines and ML
+      systems, and I care about making technology work for more people.
+    </p>
+    <div class="btns">
+      <a class="primary" href="#projects">See my work</a>
+      <a href="#contact">Get in touch</a>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      I'm a senior at UC Berkeley double-majoring in Data Science and Public Health with a
+      Statistics minor. I grew up in Monterey County, and that shaped how I think about
+      access: who gets good tools, good data, and good decisions.
+    </p>
+    <p>
+      My interests sit between data engineering, machine learning, ergonomics, and
+      technology access equity. I've worked across data engineering, ML pipeline, and
+      analytics internships.
+    </p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <div class="card">
+      <h3>Water chemistry QA/QC pipeline</h3>
+      <div class="meta">UC Berkeley capstone · ML + GenAI</div>
+      <p>An ML and generative-AI pipeline for quality control of California surface water chemistry data.
+         <a class="link" href="#">Read more →</a></p>
+    </div>
+
+    <div class="card">
+      <h3>SF Neighborhood Fit Finder</h3>
+      <div class="meta">Team data science project · Clustering + regression</div>
+      <p>Clusters San Francisco neighborhoods and predicts a desirability proxy from walkability and other features.
+         <a class="link" href="#">Read more →</a></p>
+    </div>
+
+    <div class="card">
+      <h3>24H budgeting app</h3>
+      <div class="meta">Product management class · Mobile</div>
+      <p>A mobile budgeting app designed and prototyped for a product management course.
+         <a class="link" href="#">View →</a></p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="tags">
+      <span>Python</span><span>R</span><span>SQL</span><span>Snowflake</span><span>dbt</span>
+      <span>Palantir Foundry</span><span>AWS</span><span>XGBoost</span><span>ARIMA</span>
+      <span>Bayesian methods</span><span>LLM classification</span><span>ETL</span>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>
+      Email: <a class="link" href="mailto:you@berkeley.edu">you@berkeley.edu</a><br>
+      <a class="link" href="https://linkedin.com/in/your-handle">LinkedIn</a> ·
+      <a class="link" href="https://github.com/your-handle">GitHub</a>
+    </p>
+  </section>
+
+  <footer>© <span id="y"></span> Ciann</footer>
+</div>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
