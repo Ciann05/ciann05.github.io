@@ -3,136 +3,739 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ciann</title>
-<meta name="description" content="Ciann — data science and public health at UC Berkeley.">
+<title>Ciann Amalan | Data Science &amp; Public Health</title>
+<meta name="description" content="Ciann Amalan — data science and public health at UC Berkeley. Pipelines, ML, and technology access.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550;9..144,650;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #fafaf7;
-    --fg: #1b1b1b;
-    --muted: #6b6b66;
-    --line: #e4e3dc;
-    --accent: #2f5d50;
+    --background: #f6f8f7;
+    --foreground: #122b36;
+    --ink-soft: #33505f;
+    --ink-muted: #5b7282;
+    --accent: #0f766e;
+    --accent-bright: #14b8a6;
+    --accent-wash: #e7f2f0;
+    --navy: #123a52;
+    --card-border: #dde7e4;
+    --white: #ffffff;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Source Sans 3", "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --max: 64rem;
   }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #131413; --fg: #ecece6; --muted: #9a9a92; --line: #2a2b29; --accent: #8fc7b3; }
-  }
+
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    margin: 0; background: var(--bg); color: var(--fg);
-    font: 17px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    margin: 0;
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    background: var(--background);
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
-  nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; }
-  nav .name { font-weight: 650; letter-spacing: -0.01em; }
-  nav a { color: var(--muted); text-decoration: none; margin-left: 20px; font-size: 15px; }
-  nav a:hover { color: var(--accent); }
-  header.hero { padding: 72px 0 48px; }
-  h1 { font-size: clamp(2.2rem, 6vw, 3.2rem); line-height: 1.1; letter-spacing: -0.03em; margin: 0 0 16px; }
-  .lead { font-size: 1.15rem; color: var(--muted); max-width: 34em; margin: 0 0 24px; }
-  .btns a {
-    display: inline-block; padding: 9px 18px; border-radius: 8px; text-decoration: none;
-    font-size: 15px; margin-right: 10px; border: 1px solid var(--line); color: var(--fg);
+  img { display: block; max-width: 100%; }
+  a { color: var(--accent); }
+
+  /* —— Nav (Anya-like sticky mono) —— */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--card-border);
+    background: color-mix(in oklab, var(--white) 75%, transparent);
+    backdrop-filter: blur(12px);
   }
-  .btns a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  @media (prefers-color-scheme: dark) { .btns a.primary { color: #0e0f0e; } }
-  .btns a:hover { opacity: .85; }
-  section { padding: 40px 0; border-top: 1px solid var(--line); }
-  h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 0 0 20px; font-weight: 600; }
-  .card { margin-bottom: 28px; }
-  .card h3 { margin: 0 0 4px; font-size: 1.05rem; }
-  .card .meta { color: var(--muted); font-size: 14px; margin-bottom: 6px; }
-  .card p { margin: 0; }
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tags span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; font-size: 14px; color: var(--muted); }
-  a.link { color: var(--accent); }
-  footer { padding: 40px 0 56px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+  .site-nav-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .nav-brand {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+  .nav-brand:hover { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 1.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+    text-decoration: none;
+    color: var(--ink-muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* —— Hero: one composition, brand-first —— */
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-glow::before {
+    content: "";
+    position: absolute;
+    top: -8rem;
+    right: -8rem;
+    width: 28rem;
+    height: 28rem;
+    border-radius: 50%;
+    background: var(--accent);
+    filter: blur(160px);
+    opacity: 0.08;
+  }
+  .hero-glow::after {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: -10rem;
+    width: 22rem;
+    height: 22rem;
+    border-radius: 50%;
+    background: var(--navy);
+    filter: blur(160px);
+    opacity: 0.06;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 5.5rem) 1.5rem clamp(3.5rem, 7vw, 5rem);
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 860px) {
+    .hero-inner {
+      grid-template-columns: 1.35fr 1fr;
+      gap: 3rem;
+    }
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    margin: 0 0 1.15rem;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: clamp(3.4rem, 10vw, 4.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--navy);
+    margin: 0 0 0.35rem;
+  }
+  .brand-rule {
+    width: min(18rem, 70%);
+    height: 2.5rem;
+    margin: 0 0 1.1rem -0.15rem;
+    color: var(--accent);
+  }
+  .hero-headline {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(1.2rem, 2.4vw, 1.4rem);
+    line-height: 1.35;
+    color: var(--ink-soft);
+    margin: 0 0 0.65rem;
+    max-width: 22em;
+  }
+  .hero-lede {
+    margin: 0 0 1.75rem;
+    font-size: 0.98rem;
+    color: var(--ink-muted);
+    max-width: 34em;
+    line-height: 1.6;
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.25rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 1px 2px rgba(18, 58, 82, 0.08);
+    transition: background 0.2s, transform 0.25s var(--ease);
+  }
+  .btn:hover {
+    background: #0d635c;
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+  .btn svg { flex-shrink: 0; }
+  .btn-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--card-border);
+    transition: color 0.2s, text-decoration-color 0.2s;
+  }
+  .btn-text:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+  .socials {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-left: 0.15rem;
+  }
+  .socials a {
+    color: var(--ink-muted);
+    transition: color 0.2s;
+  }
+  .socials a:hover { color: var(--accent); }
+
+  .hero-visual {
+    position: relative;
+    min-height: 18rem;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  @media (min-width: 860px) {
+    .hero-visual {
+      min-height: 22rem;
+      align-self: stretch;
+      margin-right: calc(-1 * max(0px, (100vw - var(--max)) / 2));
+      width: calc(100% + max(0px, (100vw - var(--max)) / 2));
+      clip-path: inset(0);
+    }
+  }
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    min-height: 18rem;
+    object-fit: cover;
+    object-position: center 45%;
+    animation: slow-drift 26s ease-in-out infinite alternate;
+  }
+  @keyframes slow-drift {
+    from { transform: scale(1.04); }
+    to { transform: scale(1.1) translate(-1%, -0.5%); }
+  }
+  .hero-visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(18, 58, 82, 0.12), transparent 55%);
+    pointer-events: none;
+  }
+
+  /* Entrance */
+  .rise {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise-in 0.85s var(--ease) forwards;
+  }
+  .d1 { animation-delay: 0.08s; }
+  .d2 { animation-delay: 0.18s; }
+  .d3 { animation-delay: 0.3s; }
+  .d4 { animation-delay: 0.42s; }
+  .d5 { animation-delay: 0.54s; }
+  @keyframes rise-in {
+    to { opacity: 1; transform: none; }
+  }
+
+  .scroll-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+  .scroll-in.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-visual img { animation: none; }
+    .rise, .scroll-in {
+      opacity: 1;
+      transform: none;
+      animation: none;
+      transition: none;
+    }
+  }
+
+  /* —— Sections —— */
+  .section {
+    padding: clamp(3.5rem, 8vw, 5rem) 1.5rem;
+  }
+  .section-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--navy) 20%, transparent);
+    padding-bottom: 0.75rem;
+    margin-bottom: 2.25rem;
+  }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    letter-spacing: -0.03em;
+    color: var(--navy);
+    margin: 0;
+  }
+  .section-head .mono-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+  @media (max-width: 520px) {
+    .section-head .mono-label { display: none; }
+  }
+
+  /* About */
+  #about { padding-top: 1rem; }
+  .about-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 720px) {
+    .about-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  }
+  .about-grid p {
+    margin: 0 0 1rem;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+  }
+  .about-grid p:last-child { margin-bottom: 0; }
+  .accent-bar {
+    width: 1.75rem;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  /* Projects — typographic rows, links only when real */
+  .project {
+    display: grid;
+    gap: 0.35rem 1.5rem;
+    padding: 1.65rem 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .project:first-of-type { padding-top: 0; }
+  .project:last-child { border-bottom: none; }
+  @media (min-width: 720px) {
+    .project {
+      grid-template-columns: 1fr auto;
+      align-items: start;
+    }
+  }
+  .project h3 {
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    margin: 0 0 0.2rem;
+  }
+  .project .meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    margin-bottom: 0.45rem;
+  }
+  .project p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    max-width: 40rem;
+  }
+  .project .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.65rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .project .more:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .project .more-slot {
+    margin-top: 0.35rem;
+  }
+  @media (min-width: 720px) {
+    .project .more-slot {
+      margin-top: 0.15rem;
+      justify-self: end;
+      text-align: right;
+    }
+  }
+
+  /* Skills */
+  #skills { background: var(--white); border-block: 1px solid var(--card-border); }
+  .skills-grid {
+    display: grid;
+    gap: 1.75rem;
+  }
+  @media (min-width: 720px) {
+    .skills-grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  }
+  .skill-col h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 650;
+    color: var(--navy);
+    margin: 0 0 0.65rem;
+  }
+  .skill-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .skill-col li {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .skill-col li:last-child { border-bottom: none; }
+
+  /* Contact — navy band like Anya */
+  #contact {
+    background: var(--navy);
+    color: var(--white);
+    margin-top: 1rem;
+  }
+  #contact .section-head {
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+  }
+  #contact .section-head h2 { color: var(--white); }
+  #contact .mono-label { color: rgba(255, 255, 255, 0.45); }
+  .contact-lede {
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 28rem;
+    margin: 0 0 1.75rem;
+  }
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.25rem;
+  }
+  .contact-mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--navy);
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .contact-mail:hover { background: #d8efe9; color: var(--navy); }
+  .contact-socials {
+    display: inline-flex;
+    gap: 1rem;
+  }
+  .contact-socials a {
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 0.2s;
+  }
+  .contact-socials a:hover { color: var(--white); }
+
+  footer {
+    background: var(--navy);
+    padding: 0 1.5rem 2.5rem;
+  }
+  footer p {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  @media (max-width: 420px) {
+    .nav-links a[href="#skills"] { display: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <nav>
-    <span class="name">Ciann</span>
-    <div>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a class="nav-brand" href="#top">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" aria-hidden="true" style="display:inline;vertical-align:-2px;margin-right:0.35rem"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>ciann amalan
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">about</a></li>
+        <li><a href="#projects">projects</a></li>
+        <li><a href="#skills">skills</a></li>
+        <li><a href="#contact">contact</a></li>
+      </ul>
     </div>
   </nav>
 
-  <header class="hero">
-    <h1>Hi, I'm Ciann.</h1>
-    <p class="lead">
-      Data Science and Public Health student at UC Berkeley. I build data pipelines and ML
-      systems, and I care about making technology work for more people.
-    </p>
-    <div class="btns">
-      <a class="primary" href="#projects">See my work</a>
-      <a href="#contact">Get in touch</a>
+  <header class="hero" id="top">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow rise">data science × public health</p>
+        <h1 class="brand rise d1">Ciann</h1>
+        <svg class="brand-rule rise d2" viewBox="0 0 600 64" fill="none" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 32 H70 q6 0 9 -5 t9 5 H130 l7 3 8 -26 9 34 7 -14 5 4 q8 0 12 -6 t12 6 H270 q6 0 9 -5 t9 5 H330 l7 3 8 -26 9 34 7 -14 5 4 q8 0 12 -6 t12 6 H470 q6 0 9 -5 t9 5 H530 l7 3 8 -26 9 34 7 -14 5 4 H600"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"
+            style="animation: draw-line 1.4s var(--ease) 0.5s forwards"/>
+        </svg>
+        <style>@keyframes draw-line { to { stroke-dashoffset: 0; } }</style>
+        <p class="hero-headline rise d3">Data science and public health at UC Berkeley.</p>
+        <p class="hero-lede rise d4">
+          I build data pipelines and ML systems, and I care about making technology work for more people.
+        </p>
+        <div class="cta-row rise d5">
+          <a class="btn" href="#projects">
+            See my work
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a class="btn-text" href="#contact">Get in touch</a>
+          <span class="socials">
+            <a href="https://www.linkedin.com/in/ciannamalan2005/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://github.com/Ciann05" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            </a>
+          </span>
+        </div>
+      </div>
+      <div class="hero-visual rise d3" aria-hidden="true">
+        <img
+          src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?auto=format&fit=crop&w=1600&q=80"
+          alt=""
+          width="1600"
+          height="1200"
+          fetchpriority="high"
+        >
+      </div>
     </div>
   </header>
 
-  <section id="about">
-    <h2>About</h2>
-    <p>
-      I'm a senior at UC Berkeley double-majoring in Data Science and Public Health with a
-      Statistics minor. I grew up in Monterey County, and that shaped how I think about
-      access: who gets good tools, good data, and good decisions.
-    </p>
-    <p>
-      My interests sit between data engineering, machine learning, ergonomics, and
-      technology access equity. I've worked across data engineering, ML pipeline, and
-      analytics internships.
-    </p>
-  </section>
+  <main>
+    <section class="section" id="about">
+      <div class="section-inner">
+        <div class="section-head scroll-in">
+          <h2>About</h2>
+          <span class="mono-label">where I’m from</span>
+        </div>
+        <div class="about-grid">
+          <div class="scroll-in">
+            <div class="accent-bar" aria-hidden="true"></div>
+            <p>
+              I'm a senior at UC Berkeley double-majoring in Data Science and Public Health with a
+              Statistics minor. I grew up in Monterey County, and that shaped how I think about
+              access: who gets good tools, good data, and good decisions.
+            </p>
+          </div>
+          <div class="scroll-in">
+            <div class="accent-bar" aria-hidden="true"></div>
+            <p>
+              My interests sit between data engineering, machine learning, ergonomics, and
+              technology access equity. I've worked across data engineering, ML pipeline, and
+              analytics internships.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
+    <section class="section" id="projects">
+      <div class="section-inner">
+        <div class="section-head scroll-in">
+          <h2>Projects</h2>
+          <span class="mono-label">selected work</span>
+        </div>
 
-    <div class="card">
-      <h3>Water chemistry QA/QC pipeline</h3>
-      <div class="meta">UC Berkeley capstone · ML + GenAI</div>
-      <p>An ML and generative-AI pipeline for quality control of California surface water chemistry data.
-         <a class="link" href="#">Read more →</a></p>
-    </div>
+        <article class="project scroll-in">
+          <div>
+            <h3>Water chemistry QA/QC pipeline</h3>
+            <div class="meta">UC Berkeley capstone · ML + GenAI</div>
+            <p>An ML and generative-AI pipeline for quality control of California surface water chemistry data.</p>
+          </div>
+          <div class="more-slot">
+            <a class="more" href="https://virtual.posterpresentations.com/research/presentation/ID120282/" target="_blank" rel="noopener noreferrer">
+              Read more
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+          </div>
+        </article>
 
-    <div class="card">
-      <h3>SF Neighborhood Fit Finder</h3>
-      <div class="meta">Team data science project · Clustering + regression</div>
-      <p>Clusters San Francisco neighborhoods and predicts a desirability proxy from walkability and other features.
-         <a class="link" href="#">Read more →</a></p>
-    </div>
+        <article class="project scroll-in">
+          <div>
+            <h3>StockVisionz</h3>
+            <div class="meta">Stock &amp; finance · Product</div>
+            <p>A financial stock analysis product for researching tickers — interactive charts, technicals, and AI-assisted reads.</p>
+          </div>
+          <div class="more-slot">
+            <a class="more" href="https://stockvisionz.com/" target="_blank" rel="noopener noreferrer">
+              Visit site
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+          </div>
+        </article>
 
-    <div class="card">
-      <h3>24H budgeting app</h3>
-      <div class="meta">Product management class · Mobile</div>
-      <p>A mobile budgeting app designed and prototyped for a product management course.
-         <a class="link" href="#">View →</a></p>
-    </div>
-  </section>
+        <article class="project scroll-in">
+          <div>
+            <h3>SF Neighborhood Fit Finder</h3>
+            <div class="meta">Team data science project · Clustering + regression</div>
+            <p>Clusters San Francisco neighborhoods and predicts a desirability proxy from walkability and other features.</p>
+          </div>
+        </article>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="tags">
-      <span>Python</span><span>R</span><span>SQL</span><span>Snowflake</span><span>dbt</span>
-      <span>Palantir Foundry</span><span>AWS</span><span>XGBoost</span><span>ARIMA</span>
-      <span>Bayesian methods</span><span>LLM classification</span><span>ETL</span>
-    </div>
-  </section>
+        <article class="project scroll-in">
+          <div>
+            <h3>24H budgeting app</h3>
+            <div class="meta">Product management class · Mobile</div>
+            <p>A mobile budgeting app designed and prototyped for a product management course.</p>
+          </div>
+        </article>
+      </div>
+    </section>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>
-      Email: <a class="link" href="mailto:you@berkeley.edu">you@berkeley.edu</a><br>
-      <a class="link" href="https://linkedin.com/in/your-handle">LinkedIn</a> ·
-      <a class="link" href="https://github.com/your-handle">GitHub</a>
-    </p>
-  </section>
+    <section class="section" id="skills">
+      <div class="section-inner">
+        <div class="section-head scroll-in">
+          <h2>Skills</h2>
+          <span class="mono-label">tools I reach for</span>
+        </div>
+        <div class="skills-grid scroll-in">
+          <div class="skill-col">
+            <h3>Languages</h3>
+            <ul>
+              <li>Python</li>
+              <li>R</li>
+              <li>SQL</li>
+            </ul>
+          </div>
+          <div class="skill-col">
+            <h3>Data stack</h3>
+            <ul>
+              <li>Snowflake</li>
+              <li>dbt</li>
+              <li>Palantir Foundry</li>
+              <li>AWS</li>
+              <li>ETL</li>
+            </ul>
+          </div>
+          <div class="skill-col">
+            <h3>Modeling</h3>
+            <ul>
+              <li>XGBoost</li>
+              <li>ARIMA</li>
+              <li>Bayesian methods</li>
+              <li>LLM classification</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <footer>© <span id="y"></span> Ciann</footer>
-</div>
-<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+    <section class="section" id="contact">
+      <div class="section-inner scroll-in">
+        <div class="section-head">
+          <h2>Let’s talk.</h2>
+          <span class="mono-label">contact</span>
+        </div>
+        <p class="contact-lede">
+          Open to conversations about data systems, public health tech, and access equity.
+        </p>
+        <div class="contact-actions">
+          <a class="contact-mail" href="mailto:ciann.amalan@berkeley.edu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+            ciann.amalan@berkeley.edu
+          </a>
+          <span class="contact-socials">
+            <a href="https://www.linkedin.com/in/ciannamalan2005/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://github.com/Ciann05" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            </a>
+          </span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="y"></span> ciann amalan</p>
+  </footer>
+
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: "0px 0px -6% 0px", threshold: 0.1 }
+  );
+  document.querySelectorAll(".scroll-in").forEach((el) => observer.observe(el));
+</script>
 </body>
 </html>
