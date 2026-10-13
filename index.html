@@ -230,11 +230,16 @@
   }
   .socials a:hover { color: var(--accent); }
 
+  /* Hero visual — Cyrus-style particle network (no photography) */
   .hero-visual {
     position: relative;
     min-height: 18rem;
-    border-radius: 0;
     overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 55% at 70% 30%, rgba(20, 184, 166, 0.14), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(18, 58, 82, 0.55), transparent 55%),
+      linear-gradient(160deg, #0b1a24 0%, #123a52 55%, #0a2836 100%);
+    border: 1px solid color-mix(in oklab, var(--navy) 35%, transparent);
   }
   @media (min-width: 860px) {
     .hero-visual {
@@ -242,27 +247,61 @@
       align-self: stretch;
       margin-right: calc(-1 * max(0px, (100vw - var(--max)) / 2));
       width: calc(100% + max(0px, (100vw - var(--max)) / 2));
-      clip-path: inset(0);
+      border-right: none;
     }
   }
-  .hero-visual img {
-    width: 100%;
-    height: 100%;
-    min-height: 18rem;
-    object-fit: cover;
-    object-position: center 45%;
-    animation: slow-drift 26s ease-in-out infinite alternate;
-  }
-  @keyframes slow-drift {
-    from { transform: scale(1.04); }
-    to { transform: scale(1.1) translate(-1%, -0.5%); }
-  }
-  .hero-visual::after {
-    content: "";
+  .hero-visual-grid {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(18, 58, 82, 0.12), transparent 55%);
+    background-image:
+      linear-gradient(rgba(100, 255, 218, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100, 255, 218, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
     pointer-events: none;
+    z-index: 1;
+  }
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: block;
+  }
+  .hero-visual-meta {
+    position: absolute;
+    left: 1.1rem;
+    right: 1.1rem;
+    bottom: 1.1rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: rgba(230, 241, 255, 0.55);
+    pointer-events: none;
+  }
+  .hero-visual-meta .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #64ffda;
+  }
+  .hero-visual-meta .live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #64ffda;
+    box-shadow: 0 0 8px rgba(100, 255, 218, 0.7);
+    animation: status-pulse 2.2s ease infinite;
+  }
+  @keyframes status-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(1.25); }
   }
 
   /* Entrance */
@@ -290,7 +329,7 @@
     transform: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-visual img { animation: none; }
+    .hero-visual-meta .live::before { animation: none; }
     .rise, .scroll-in {
       opacity: 1;
       transform: none;
@@ -560,13 +599,12 @@
         </div>
       </div>
       <div class="hero-visual rise d3" aria-hidden="true">
-        <img
-          src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?auto=format&fit=crop&w=1600&q=80"
-          alt=""
-          width="1600"
-          height="1200"
-          fetchpriority="high"
-        >
+        <div class="hero-visual-grid"></div>
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-visual-meta">
+          <span>UC BERKELEY · DS + PUBLIC HEALTH</span>
+          <span class="live">NETWORK</span>
+        </div>
       </div>
     </div>
   </header>
@@ -736,6 +774,83 @@
     { rootMargin: "0px 0px -6% 0px", threshold: 0.1 }
   );
   document.querySelectorAll(".scroll-in").forEach((el) => observer.observe(el));
+
+  /* Particle network — spirit of cyrusamalan.github.io/Portfolio-Website */
+  (function initHeroNetwork() {
+    const canvas = document.getElementById("hero-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let particles = [];
+    let raf = 0;
+
+    function size() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      canvas.style.width = rect.width + "px";
+      canvas.style.height = rect.height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { w: rect.width, h: rect.height };
+    }
+
+    function seed() {
+      const { w, h } = size();
+      const count = Math.max(36, Math.floor((w * h) / 9000));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.28,
+        vy: (Math.random() - 0.5) * 0.28,
+        r: Math.random() * 1.6 + 0.5,
+        o: Math.random() * 0.45 + 0.15
+      }));
+    }
+
+    function frame() {
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+      const maxDist = 112;
+      for (let i = 0; i < particles.length; i++) {
+        const a = particles[i];
+        if (!reduce) {
+          a.x += a.vx;
+          a.y += a.vy;
+          if (a.x < 0 || a.x > w) a.vx *= -1;
+          if (a.y < 0 || a.y > h) a.vy *= -1;
+        }
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(100, 255, 218, ${a.o})`;
+        ctx.fill();
+        for (let j = i + 1; j < particles.length; j++) {
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < maxDist) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(100, 255, 218, ${(1 - dist / maxDist) * 0.18})`;
+            ctx.lineWidth = 0.7;
+            ctx.stroke();
+          }
+        }
+      }
+      if (!reduce) raf = requestAnimationFrame(frame);
+    }
+
+    seed();
+    frame();
+    window.addEventListener("resize", () => {
+      cancelAnimationFrame(raf);
+      seed();
+      frame();
+    }, { passive: true });
+  })();
 </script>
 </body>
 </html>
