@@ -206,8 +206,7 @@
 
   /* Projects */
   .projects { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
-  .project { grid-column: span 3; }
-  .project:nth-child(n+3) { grid-column: span 2; }
+  .project { grid-column: span 2; }
   .project { display: flex; flex-direction: column; }
   .project-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
   .badge { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
@@ -436,6 +435,16 @@
         <div class="foot">
           <div class="chips"><span>PyTorch</span><span>CNNs</span><span>Segmentation</span></div>
           <a class="go" href="https://github.com/Ciann05/Medical_Imaging_Tools_DL" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </article>
+
+      <article class="card project reveal">
+        <div class="project-top"><span class="kicker" style="margin:0">IOS · WEARABLES</span><span class="badge live">BLUETOOTH LE</span></div>
+        <h3>WHOOP Health Monitor</h3>
+        <p>A SwiftUI iPhone app that pairs with a WHOOP strap over Bluetooth LE and streams live heart rate. From those samples it estimates a stress score, resting heart rate, and breathing rate, then stores every reading on device with SwiftData and charts the trends.</p>
+        <div class="foot">
+          <div class="chips"><span>Swift</span><span>Core Bluetooth</span><span>SwiftData</span></div>
+          <a class="go" href="https://github.com/Ciann05/whoop_app" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
       </article>
 
